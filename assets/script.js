@@ -24,16 +24,16 @@ $(function () {
   // past, present, and future classes? How can Day.js be used to get the
   // current hour in 24-hour time?
   let currentHour = dayjs().hour();
-  for(let bodyElem of timeBlocks){
-    let hour = bodyElem.id.slice(bodyElem.id.indexOf("-") + 1);
+  $(".time-block").each(function(){
+    let hour = $(this).attr("id").slice($(this).attr("id").indexOf("-") + 1);
     if(hour == currentHour){
-      bodyElem.classList.add("present");
+      $(this).addClass("present");
     }else if(hour > currentHour){
-      bodyElem.classList.add("future");
+      $(this).addClass("future");
     }else{
-      bodyElem.classList.add("past");
+      $(this).addClass("past");
     }
-  }
+  });
 
   // Done: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
@@ -42,18 +42,19 @@ $(function () {
   //Will use an array to store the value with the current hour
   //it will be formatted as ["hourid(seperator)text"] with (seperator) = \u0482
   //for example: localPlans[0] could return "hour-4҂go to doctors office"
+  let updatePlans = function(){
+    for(let plan of todaysPlans){
+      let textSplit = plan.split(seperator);
+      $("#" + textSplit[0]).children("textarea").text(textSplit[1]);
+    }
+  }
+
   let localPlans = JSON.parse(localStorage.getItem("localPlans"));
   if(localPlans !== null){
     todaysPlans = localPlans;
     updatePlans();
   }
 
-  let updatePlans = function(){
-    for(let plan of todaysPlans){
-      let textSplit = plan.textSplit(seperator);
-      $("#" + textSplit[0]).children("textarea").text(textSplit[1]);
-    }
-  }
 
 
   // Done: Add code to display the current date in the header of the page.
