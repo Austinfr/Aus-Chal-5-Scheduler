@@ -38,8 +38,7 @@ $(function () {
     //this chunk adds a click event listener for each save button
     $(this).click(function(event){
       if($(event.target).hasClass("saveBtn")){
-        storePlan($(this).attr("id"), $(this).children("textarea").html());
-        console.log($(this).children("textarea").text());
+        storePlan($(this).attr("id"), $(this).children("textarea").val());
       }
     });
   });
