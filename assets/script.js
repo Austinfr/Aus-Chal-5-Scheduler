@@ -6,17 +6,16 @@ let todaysPlans = [];
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
-  let timeBlocks = $(".time-block");
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
   // function? How can DOM traversal be used to get the "hour-x" id of the
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
-  for(let bodyElem of timeBlocks){
-    bodyElem.click();
+  function storePlan(time, plan){
+    todaysPlans.push(time + "" + seperator + "" + plan);
+    localStorage.setItem("localPlans", JSON.stringify(todaysPlans));
   }
-
 
   // Done: Add code to apply the past, present, or future class to each time
   // block by comparing the id to the current hour. HINTS: How can the id
@@ -25,6 +24,7 @@ $(function () {
   // current hour in 24-hour time?
   let currentHour = dayjs().hour();
   $(".time-block").each(function(){
+    //this chunk sets the classes for where its at
     let hour = $(this).attr("id").slice($(this).attr("id").indexOf("-") + 1);
     if(hour == currentHour){
       $(this).addClass("present");
@@ -33,6 +33,15 @@ $(function () {
     }else{
       $(this).addClass("past");
     }
+    //end of first chunk
+
+    //this chunk adds a click event listener for each save button
+    $(this).click(function(event){
+      if($(event.target).hasClass("saveBtn")){
+        storePlan($(this).attr("id"), $(this).children("textarea").html());
+        console.log($(this).children("textarea").text());
+      }
+    });
   });
 
   // Done: Add code to get any user input that was saved in localStorage and set
